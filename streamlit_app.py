@@ -17,11 +17,13 @@ if wav_audio_data:
     #     f.write(wav_audio_data)
     
     #st.success(f"WAV file saved successfully as {file_path}")
+    audio = st.audio(wav_audio_data, format='audio/wav')
     model = whisper.load_model("tiny")
 
     start = time.time()
-    result = model.transcribe(wav_audio_data)
+    result = model.transcribe(audio)
     end = time.time()
+    
     st.write(end-start)
     
     st.write(result['text'])
