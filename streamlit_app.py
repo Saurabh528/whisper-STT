@@ -11,7 +11,7 @@ wav_audio_data = st_audiorec()
 
 uploaded_audio = st.file_uploader("Upload an audio file", type=['mp3', 'wav', 'ogg'])
 if uploaded_audio:
-    file_path = uploaded_file.name
+    file_path = uploaded_audio.name
     # Load the 'tiny' model to ensure compatibility with Streamlit Cloud
     model = whisper.load_model("tiny")
     
