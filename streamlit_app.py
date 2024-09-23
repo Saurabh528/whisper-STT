@@ -9,24 +9,15 @@ wav_audio_data = st_audiorec()
 
 
 
-if wav_audio_data:
-    file_path = 'save_recorded_audio.wav'
+uploaded_audio = st.file_uploader("Upload an audio file", type=['mp3', 'wav', 'ogg'])
+if uploaded_audio:
+    file_path = uploaded_file.name
+    # Load the 'tiny' model to ensure compatibility with Streamlit Cloud
+    model = whisper.load_model("tiny")
     
-    # Save the audio file as .wav
-    with open(file_path, "wb") as f:
-        f.write(wav_audio_data)
+    start = time.time()
+    result = model.transcribe(file_path)
+    end = time.time()
+    st.write(end-start)
     
-    st.success(f"WAV file saved successfully as {file_path}")
-
-
-
-
-# Load the 'tiny' model to ensure compatibility with Streamlit Cloud
-model = whisper.load_model("tiny")
-
-start = time.time()
-result = model.transcribe("save_recorded_audio.wav")
-end = time.time()
-st.write(end-start)
-
-st.write(result['text'])
+    st.write(result['text'])
