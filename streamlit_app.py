@@ -1,30 +1,16 @@
-from st_audiorec import st_audiorec
-import streamlit as  st
-import os
-import whisper
-import time
+import streamlit as st
+from audiorecorder import audiorecorder
 
+st.title("Audio Recorder")
+audio = audiorecorder("Click to record", "Click to stop recording")
 
-wav_audio_data = st_audiorec()
+if len(audio) > 0:
+    # To play audio in frontend:
+    st.audio(audio.export().read())  
 
+    # To save audio to a file, use pydub export method:
+    audio.export("audio.wav", format="wav")
 
+    # To get audio properties, use pydub AudioSegment properties:
+    st.write(f"Frame rate: {audio.frame_rate}, Frame width: {audio.frame_width}, Duration: {audio.duration_seconds} seconds")
 
-uploaded_audio = st.file_uploader("Upload an audio file", type=['mp3', 'wav', 'ogg'])
-if uploaded_audio:
-    file_path = os.path.join("tempDir", uploaded_audio.name)  # You can customize the directory
-    
-    # Ensure the directory exists
-    os.makedirs("tempDir", exist_ok=True)
-    
-    # Write the file to the temporary directory
-    with open(file_path, "wb") as f:
-        f.write(uploaded_audio.getbuffer())
-    # Load the 'tiny' model to ensure compatibility with Streamlit Cloud
-    model = whisper.load_model("tiny")
-    
-    start = time.time()
-    result = model.transcribe(file_path)
-    end = time.time()
-    st.write(end-start)
-    
-    st.write(result['text'])
