@@ -18,7 +18,7 @@ if uploaded_audio:
     
     # Write the file to the temporary directory
     with open(file_path, "wb") as f:
-        f.write(uploaded_file.getbuffer())
+        f.write(uploaded_audio.getbuffer())
     # Load the 'tiny' model to ensure compatibility with Streamlit Cloud
     model = whisper.load_model("tiny")
     
